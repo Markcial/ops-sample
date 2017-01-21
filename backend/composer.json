@@ -1,0 +1,15 @@
+{
+    "name": "example/backend",
+    "require": {
+        "laravel/lumen": "^5.3"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "Marc Garcia Sastre",
+            "email": "markcial@gmail.com"
+        }
+    ]
+}

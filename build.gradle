@@ -10,13 +10,24 @@
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'groovy'
-apply plugin: 'deploy-plugin'
 
 task showPlugins {
     doLast {
         project.plugins.each {
             println it.getClass().name
         }
+    }
+}
+
+task archive(type: Zip) {
+    baseName 'deployment'
+    destinationDir new File(rootDir, '/build')
+    from('frontend') {
+        into('fr')
+    }
+    from('backend') {
+        into('be')
+        include '**/*.php'
     }
 }
 

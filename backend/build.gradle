@@ -1,0 +1,8 @@
+apply plugin: 'deploy-plugin'
+
+task build << {
+    println "hello backend"
+}
+
+build.dependsOn 'composer'
+
