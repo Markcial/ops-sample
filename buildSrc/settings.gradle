@@ -1,2 +1,3 @@
 
 include "deploy-plugin"
+include "docker-plugin"

@@ -1,11 +1,25 @@
-apply plugin: 'deploy-plugin'
+import es.ulabox.v14n.Docker
 
-deployment {
-    sources '*', '*/*'
+apply plugin: 'docker-plugin'
+
+
+task install(type: Docker) {
+    command 'npm', 'install'
+    image 'node:7'
 }
 
-task build << {
-
+task clean(type: Delete) {
+    delete 'node_modules'
+    delete 'public'
 }
 
-build.dependsOn 'npm-install'
+task brunch(dependsOn: install, type: Exec) {
+    commandLine = 'brunch'
+    args = ['b', '--production']
+}
+
+task build(dependsOn: brunch) {
+    doLast {
+        println "Build completed for ${project.name}"
+    }
+}

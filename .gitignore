@@ -17,3 +17,5 @@ gradle-app.setting
 */vendor/
 
 backend/storage/
+
+fauxServer/application/*

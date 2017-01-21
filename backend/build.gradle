@@ -1,8 +1,17 @@
-apply plugin: 'deploy-plugin'
+apply plugin: 'docker-plugin'
 
-task build << {
-    println "hello backend"
+
+task composer(type: Exec) {
+    commandLine = 'composer'
+    args = ['install']
 }
 
-build.dependsOn 'composer'
+task clean(type: Delete) {
+    delete 'vendor'
+}
 
+task build(dependsOn: composer) {
+    doLast {
+        println "Build completed for ${project.name}"
+    }
+}
