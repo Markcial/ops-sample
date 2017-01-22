@@ -22,7 +22,7 @@ task buildServer(type: Exec) {
 
 task startServer(type: Exec, dependsOn: buildServer) {
     doFirst {
-        currentApplication.mkdirs()
+        currentApplicationDir.mkdirs()
     }
     commandLine = 'docker'
     args = ['run', '-d', '-v', "$currentApplicationDir:/application", '-p', '8080:80', 'faux-server']
@@ -55,11 +55,11 @@ release.dependsOn 'frontend:build'
 def currentRelease = file("${releasesDir}/${releaseName}.zip")
 
 
-task deploy(type: Copy, dependsOn: release) {
+task deploy(type: Copy, dependsOn: [startServer, release]) {
     from zipTree(currentRelease)
     into currentApplicationDir
 }
-startServer.mustRunAfter deploy
+startServer.shouldRunAfter deploy
 
 // In this section you declare where to find the dependencies of your project
 repositories {

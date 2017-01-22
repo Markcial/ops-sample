@@ -1,9 +1,7 @@
-import es.ulabox.v14n.Docker
-
 apply plugin: 'docker-plugin'
 
 
-task install(type: Docker) {
+task npmInstall(type: Docker) {
     command 'npm', 'install'
     image 'node:7'
 }
@@ -13,7 +11,7 @@ task clean(type: Delete) {
     delete 'public'
 }
 
-task brunch(dependsOn: install, type: Exec) {
+task brunch(dependsOn: npmInstall, type: Exec) {
     commandLine = 'brunch'
     args = ['b', '--production']
 }

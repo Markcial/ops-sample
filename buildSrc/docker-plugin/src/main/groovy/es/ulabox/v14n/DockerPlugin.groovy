@@ -5,10 +5,11 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
 
+
+
 class DockerPlugin implements Plugin<Project> {
     void apply(Project project) {
-        Docker.volumes = ["$project.projectDir:/application"]
-        Docker.workDir = "/application"
+        project.ext.Docker = Docker
     }
 }
 
@@ -18,11 +19,11 @@ class Docker extends DefaultTask {
     def command(String ...cmd) {
         command = cmd
     }
-    static List<String> volumes
+    List<String> volumes = ["$project.projectDir:/application"]
     def volumes(String ...vol) {
         volumes = vol
     }
-    static String workDir
+    String workDir = "/application"
     Boolean daemon = false
     Boolean cleanup = true
 
@@ -36,15 +37,15 @@ class Docker extends DefaultTask {
         if (cleanup) {
             cmd.add('--rm')
         }
-        if (!volumes.empty) {
+        if (volumes) {
             def vols = volumes.collect { v -> ['-v', v] }.flatten()
             cmd.addAll(vols as Collection<? extends String>)
         }
-        if (!workDir.empty) {
+        if (workDir) {
             cmd.addAll(['-w', workDir])
         }
         cmd.addAll([image])
-        if (!command.empty) {
+        if (command) {
             cmd.addAll(command)
         }
 
@@ -53,7 +54,6 @@ class Docker extends DefaultTask {
 
     @TaskAction
     def run() {
-        println _cmd()
         _cmd()
                 .execute()
                 .waitForProcessOutput(System.out, System.err)
