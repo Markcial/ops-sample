@@ -1,9 +1,11 @@
+import es.ulabox.v14n.Docker
+
 apply plugin: 'docker-plugin'
 
 
-task composer(type: Exec) {
-    commandLine = 'composer'
-    args = ['install']
+task composer(type: Docker) {
+    image = 'composer/composer'
+    command = ['install', '--ignore-platform-reqs']
 }
 
 task clean(type: Delete) {
